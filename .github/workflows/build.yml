@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate OpenAPI JSON
         run: |
-          swagger tofile --output $GITHUB_WORKSPACE/swagger.json ./publish/Swagger.dll v1
+          swagger tofile --output $GITHUB_WORKSPACE/swagger.json ${{env.DOTNET_ROOT}}/myapp/SwagSharp.dll v1
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
