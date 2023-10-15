@@ -57,4 +57,4 @@ Below is a sample GitHub Actions workflow designed to automate your database doc
 
 ## Pipeline Output
 
-Upon successful execution of this workflow, database documentation will be available on the [GitHub Pages](https://nurzhanme.github.io/SwagSharp/swagger.json) of the repository.
+Upon successful execution of this workflow, the resulting file will be available on the [GitHub Pages](https://nurzhanme.github.io/SwagSharp/swagger.json) of the repository.
