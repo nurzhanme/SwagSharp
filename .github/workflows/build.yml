@@ -1,0 +1,42 @@
+name: SwagGen
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Install Swashbuckle CLI
+        run: |
+          dotnet tool install --global Swashbuckle.AspNetCore.Cli --version 6.5.0
+          dotnet restore --packages $NUGET_PACKAGES_DIRECTORY
+          export PATH="$PATH:$RUNNER_TOOL_CACHE/dotnet"
+
+      - name: Generate OpenAPI JSON
+        run: |
+          swagger tofile --output $GITHUB_WORKSPACE/swagger.json ./publish/Swagger.dll v1
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
